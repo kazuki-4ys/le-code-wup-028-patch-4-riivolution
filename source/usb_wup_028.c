@@ -173,6 +173,7 @@ ios_ret_t IOS_IoctlvAsync(ios_fd_t fd, int ioctl, int input_count, int output_co
 /* Globals */
 /*============================================================================*/
 
+unsigned char usbGcnDisconnectReq = 0;
 unsigned int usbWup028DummyLong0 = 0;
 ios_fd_t dev_usb_hid_fd = -1;
 int8_t started = 0;
@@ -570,6 +571,7 @@ void onError(void) {
 /*============================================================================*/
 
 void onDevOpen(ios_fd_t fd, usr_t unused) {
+  if(usbGcnDisconnectReq)return;
   int ret;
   (void)unused;
   dev_usb_hid_fd = fd;
@@ -597,6 +599,7 @@ void callbackIgnore(ios_ret_t ret, usr_t unused) {
 
 #ifdef SUPPORT_DEV_USB_HID4
 void onDevGetVersion4(ios_ret_t ret, usr_t unused) {
+  if(usbGcnDisconnectReq)return;
   (void)unused;
   if (ret == DEV_USB_HID4_VERSION) {
 #ifdef HAVE_VERSION
@@ -620,6 +623,7 @@ void onDevGetVersion4(ios_ret_t ret, usr_t unused) {
 
 #ifdef SUPPORT_DEV_USB_HID5
 void onDevGetVersion5(ios_ret_t ret, usr_t unused) {
+  if(usbGcnDisconnectReq)return;
   (void)unused;
   if (ret == 0 && dev_usb_hid5_buffer[0] == DEV_USB_HID5_VERSION) {
 #ifdef HAVE_VERSION
@@ -639,6 +643,7 @@ void onDevGetVersion5(ios_ret_t ret, usr_t unused) {
 
 #ifdef SUPPORT_DEV_USB_HID4
 void onDevUsbChange4(ios_ret_t ret, usr_t unused) {
+  if(usbGcnDisconnectReq)return;
   if (ret >= 0) {
     int found = 0;
     for (int i = 0; i < DEV_USB_HID4_DEVICE_CHANGE_SIZE && dev_usb_hid4_devices[i] < sizeof(dev_usb_hid4_devices); i += dev_usb_hid4_devices[i] / 4) {
@@ -668,6 +673,7 @@ void onDevUsbChange4(ios_ret_t ret, usr_t unused) {
 
 #ifdef SUPPORT_DEV_USB_HID5
 void onDevUsbChange5(ios_ret_t ret, usr_t unused) {
+  if(usbGcnDisconnectReq)return;
   if (ret >= 0) {
     ret = sendAttach5(onDevUsbAttach5, (usr_t)ret);
   }
@@ -681,6 +687,7 @@ void onDevUsbChange5(ios_ret_t ret, usr_t unused) {
 
 #ifdef SUPPORT_DEV_USB_HID5
 void onDevUsbAttach5(ios_ret_t ret, usr_t vcount) {
+  if(usbGcnDisconnectReq)return;
   if (ret == 0) {
     int found = 0;
     int count = (int)vcount;
@@ -710,6 +717,7 @@ void onDevUsbAttach5(ios_ret_t ret, usr_t vcount) {
 
 #ifdef SUPPORT_DEV_USB_HID5
 void onDevUsbResume5(ios_ret_t ret, usr_t unused) {
+  if(usbGcnDisconnectReq)return;
   if (ret == 0) {
     ret = sendParams5(onDevUsbParams5, NULL);
   }
@@ -723,6 +731,7 @@ void onDevUsbResume5(ios_ret_t ret, usr_t unused) {
 
 #ifdef SUPPORT_DEV_USB_HID5
 void onDevUsbParams5(ios_ret_t ret, usr_t unused) {
+  if(usbGcnDisconnectReq)return;
   if (ret == 0) {
     /* 0-7 are already correct :) */
     dev_usb_hid5_buffer[8] = 0;
@@ -809,6 +818,7 @@ int sendPoll(void) {
 }
 
 void onDevUsbInit(ios_ret_t ret, usr_t unused) {
+  if(usbGcnDisconnectReq)return;
   if (ret >= 0) {
     ret = sendPoll();
   }
@@ -820,6 +830,7 @@ void onDevUsbInit(ios_ret_t ret, usr_t unused) {
 }
 
 void onDevUsbPoll(ios_ret_t ret, usr_t unused) {
+  if(usbGcnDisconnectReq)return;
   if (ret >= 0) {
     if (poll_msg_buffer[0] == 0x21) {
       uint32_t isr = cpu_isr_disable();

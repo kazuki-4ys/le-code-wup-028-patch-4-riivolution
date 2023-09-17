@@ -3,6 +3,22 @@
 .global getSceneID
 .global blTrickCommonEnd
 .global ICInvalidateRangeAsm
+.global OSLaunchTitleHookAsm
+.global OSLaunchTitleHookAsmEnd
+
+.macro pushStack
+    stwu sp, -0x80 (sp)#124 + パディング
+    mflr r0
+    stw r0, 0x84 (sp)
+    stmw r3, 8 (sp)
+.endm
+
+.macro popStack
+    lmw r3, 8 (sp)
+    lwz r0, 0x84 (sp)
+    mtlr r0
+    addi sp, sp, 0x80
+.endm
 
 #by vega
 #https://mariokartwii.com/showthread.php?tid=1218
@@ -42,3 +58,12 @@ getSceneID:
     lwz r3,0(r3)
     skip_all:
     blr
+
+OSLaunchTitleHookAsm:
+pushStack
+bl OSLaunchTitleHook
+popStack
+stwu sp, -0x20 (sp)
+.long 0
+.long 0
+OSLaunchTitleHookAsmEnd:
