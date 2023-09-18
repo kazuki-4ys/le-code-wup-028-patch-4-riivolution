@@ -21,8 +21,6 @@
 
 void ICInvalidateRangeAsm(void*, unsigned int);
 int getSceneID(void);
-void OSLaunchTitleHookAsm(void);
-void OSLaunchTitleHookAsmEnd(void);
 
 void *get_run_1fr_asm(void);
 void *get_run_1fr_asm_end(void);
@@ -95,7 +93,6 @@ void __main(void){
     padHookInstallTimer = -1;
     alreadyInstalledPadHook = 0;
     injectC2Patch((void*)RUN_1FR_HOOK, get_run_1fr_asm(), get_run_1fr_asm_end());
-    injectC2Patch(OSLaunchTitle, OSLaunchTitleHookAsm, OSLaunchTitleHookAsmEnd);
     lecodeEntry();//LE-CODE本来のエントリポイント
 }
 
@@ -110,8 +107,4 @@ void run_1fr(void){
     }
     if(padHookInstallTimer < 0 && isInTitleScreen())padHookInstallTimer = 0;
     return;
-}
-
-void OSLaunchTitleHook(void){
-    usbGcnDisconnectReq = 1;
 }

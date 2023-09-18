@@ -91,7 +91,6 @@ typedef struct{
 extern myGlobalVarStruct *myGlobalVarPtr;
 extern const char** COURSE_NAMES;
 extern unsigned char canUseDevUsbVen;
-extern unsigned char usbGcnDisconnectReq;
 
 void memcpy(void*, void*, unsigned int);
 void *my_malloc(unsigned int length);
