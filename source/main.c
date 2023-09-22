@@ -74,9 +74,9 @@ void injectBranch(void *target, void *src){
 
 void injectC2Patch(void *targetAddr, void *codeStart, void *codeEnd){
     //inject code like C2 code type
-    u32ToBytes((unsigned char*)codeEnd - 8, makeBranchInstructionByAddrDelta((unsigned int)targetAddr + 4 - ((unsigned int)codeEnd - 8)));
+    if(codeEnd)u32ToBytes((unsigned char*)codeEnd - 8, makeBranchInstructionByAddrDelta((unsigned int)targetAddr + 4 - ((unsigned int)codeEnd - 8)));
     u32ToBytes(targetAddr, makeBranchInstructionByAddrDelta(codeStart - targetAddr));
-    ICInvalidateRange((void*)((unsigned int)codeEnd - 8), 4);
+    if(codeEnd)ICInvalidateRange((void*)((unsigned int)codeEnd - 8), 4);
     ICInvalidateRange(targetAddr, 4);
 }
 

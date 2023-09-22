@@ -173,7 +173,6 @@ ios_ret_t IOS_IoctlvAsync(ios_fd_t fd, int ioctl, int input_count, int output_co
 /* Globals */
 /*============================================================================*/
 
-unsigned int usbWup028DummyLong0 = 0;
 ios_fd_t dev_usb_hid_fd = -1;
 int8_t started = 0;
 PADData_t gcn_data[GCN_CONTROLLER_COUNT];
@@ -215,7 +214,7 @@ void myPADControlMotor(int pad, int control);
 
 void installPadHook(void){
     started = 0;
-    injectC2Patch((void*)PATCH1_ADDR, myPADRead, (&usbWup028DummyLong0) - 2);
+    injectC2Patch((void*)PATCH1_ADDR, myPADRead, NULL);
     //replace PADRead
 }
 
@@ -223,7 +222,7 @@ void myPADRead(PADData_t result[GCN_CONTROLLER_COUNT]) {
   uint32_t isr = cpu_isr_disable();
   if (!started) {
     my_start();
-    injectC2Patch((void*)PATCH2_ADDR, myPADControlMotor, (&usbWup028DummyLong0) - 2);
+    injectC2Patch((void*)PATCH2_ADDR, myPADControlMotor, NULL);
     //replace PADControlMotor
     /* On first call only, initialise USB and globals. */
     started = 1;
