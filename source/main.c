@@ -1,6 +1,8 @@
 #include "common.h"
 #include "pad_hook.h"
 
+#define ENABLE_USB_GCN_TIMER 30
+
 #ifdef RMCP
 
 #define RUN_1FR_HOOK 0x8016eb68
@@ -100,8 +102,9 @@ void run_1fr(void){
     //画面焼き付き防止機能を無効化
     VIResetDimmingCount();
     //タイトル画面になってから30フレーム後にUSB GCNを有効化する
-    if(padHookInstallTimer < 30 && padHookInstallTimer > -1)padHookInstallTimer++;
-    if(padHookInstallTimer == 30 && (!alreadyInstalledPadHook)){
+    //Enable USB GCN 30 frames after entering the title scene.
+    if(padHookInstallTimer < ENABLE_USB_GCN_TIMER && padHookInstallTimer > -1)padHookInstallTimer++;
+    if(padHookInstallTimer == ENABLE_USB_GCN_TIMER && (!alreadyInstalledPadHook)){
         alreadyInstalledPadHook = 1;
         installPadHook();
     }

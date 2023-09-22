@@ -1,6 +1,6 @@
 # le-code-wup-028-patch-4-riivolution
 
-## 機能
+## 説明
 
 Riivolution限定ではあるが、LE-CODEベースのCT packでUSB GCNコンアダプタを使えるようにするパッチ
 
@@ -47,3 +47,57 @@ ipsパッチとして配布してある。
 ipsパッチを適用するツールとして有名なものに[winips](http://smblabo.web.fc2.com/)というものがある。
 
 最近ではipsパッチを適用できる[webアプリ](https://www.romhacking.net/patch/)も登場した
+
+## ビルド
+
+ビルドには最新版の[devkitPPC](https://devkitpro.org/wiki/Getting_Started),[Python 3.x](https://www.python.org/downloads/)(3.11.x推奨), [LE-CODE build38](https://wiki.tockdom.com/wiki/LE-CODE)が必要です。
+
+## About it
+
+It was created as a sub-project of [KZ-RTD](https://github.com/kazuki-4ys/kz_rtd). Therefore, the source code contains a lot of unnecessary code.
+
+Patch to enable USB GCN adapter via Riivolution distributed as a patch for LE-CODE.
+
+Too unstable at this time.
+
+A port of [Chadderz's](https://github.com/Chadderz121) code written as a [brainslug-wii](https://github.com/Chadderz121/brainslug-wii) module.
+
+[Original code](https://github.com/Chadderz121/wup-028-bslug)
+
+## Limitation
+
+Use the second half of the area used for cup setting as additional codes.
+
+Therefore, course slots are limited to 2048.
+
+This patch completely replaces the original functions related to GCN controller. Therefore,
+
+Dolphin: GCN controller is completely useless.
+
+Real Wii console: GCN controller adapter attached to the top of the unit will not work.(Of course, you can use the USB GCN adapter.)
+
+## Issue
+
+Changing the code to activate the USB GCN Con 30 frames after entering the title scene has helped a lot, 
+
+but sometimes the GCN controller and the Wii Remotes will not respond at all 
+
+when the communication with the Wii Remotes is lost.
+
+(This issue can be avoided by removing the batteries from the Wii Remote after entering the title scene.)
+
+## About distributed patches
+
+The distributed patches are only for build36 and build38, and cannot be used for other versions.
+
+The source code is addressed for build38.
+
+After setting various parameters with wszst, etc., the last step is to apply distributed patch.
+
+These are ips pathes.
+
+You can apply the ips patch in the [web app](https://www.romhacking.net/patch/).
+
+## Building
+
+The latest versions of [devkitPPC](https://devkitpro.org/wiki/Getting_Started), [Python 3.x](https://www.python.org/downloads/)(3.11.x recommended), [LE-CODE build38](https://wiki.tockdom.com/wiki/LE-CODE) is required.

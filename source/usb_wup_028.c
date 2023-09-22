@@ -216,6 +216,7 @@ void myPADControlMotor(int pad, int control);
 void installPadHook(void){
     started = 0;
     injectC2Patch((void*)PATCH1_ADDR, myPADRead, (&usbWup028DummyLong0) - 2);
+    //replace PADRead
 }
 
 void myPADRead(PADData_t result[GCN_CONTROLLER_COUNT]) {
@@ -223,6 +224,7 @@ void myPADRead(PADData_t result[GCN_CONTROLLER_COUNT]) {
   if (!started) {
     my_start();
     injectC2Patch((void*)PATCH2_ADDR, myPADControlMotor, (&usbWup028DummyLong0) - 2);
+    //replace PADControlMotor
     /* On first call only, initialise USB and globals. */
     started = 1;
     for (int i = 0; i < GCN_CONTROLLER_COUNT; i++)
