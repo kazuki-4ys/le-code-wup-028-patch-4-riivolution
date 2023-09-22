@@ -78,11 +78,13 @@ Real Wii console: GCN controller adapter attached to the top of the unit will no
 
 ## Issue
 
-Changing the code to activate the USB GCN Con 30 frames after entering the title scene has helped a lot, 
+Changing the code to activate the USB GCN 30 frames after entering the title scene has helped a lot, 
 
 but sometimes the GCN controller and the Wii Remotes will not respond at all 
 
 when the communication with the Wii Remotes is lost.
+
+(Probably all IOSAsync related functions will die.)
 
 (This issue can be avoided by removing the batteries from the Wii Remote after entering the title scene.)
 
